@@ -3,136 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Padre Nuestro - Lectura</title>
+    <title>Padre Nuestro para Niños</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --text-color: #f1f5f9;
-            --primary: #38bdf8;
-            --card-bg: #1e293b;
+            --bg-color: #f0f9ff; /* Celeste muy clarito */
+            --text-color: #1e293b;
+            --primary: #60a5fa; /* Azul amigable */
+            --success: #4ade80; /* Verde suave */
+            --fail: #f87171; /* Rojo suave */
+            --card-bg: #ffffff;
+            --accent: #fbbf24; /* Amarillo sol */
         }
 
         * { box-sizing: border-box; }
 
         body { 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif; 
             margin: 0; 
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
             flex-direction: column;
-            /* Cambiado para permitir scroll si el contenido crece */
             min-height: 100vh;
-            overflow-y: auto; 
         }
 
+        /* Contenedor Principal Centrado */
         .main-layout {
             display: flex;
             flex-direction: column;
-            flex: 1;
-            padding: 15px;
-            gap: 15px;
-        }
-
-        /* Contenedor de texto con altura flexible */
-        .text-container {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
-            border: 2px solid #334155;
-            min-height: 300px;
-            display: flex;
             align-items: center;
             justify-content: center;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto; /* Centra todo en PC */
+            width: 100%;
+        }
+
+        .text-container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 30px;
+            border: 6px solid #bae6fd;
+            box-shadow: 0 10px 0 #bae6fd;
+            width: 100%;
+            transition: transform 0.3s;
         }
 
         #text-to-read {
-            font-size: clamp(1.2rem, 5vw, 1.6rem);
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
             line-height: 1.6;
             margin: 0;
             white-space: pre-wrap;
             text-align: center;
+            color: #0369a1;
         }
 
-        /* Barra de progreso horizontal para móvil por defecto */
-        .progress-aside {
+        /* Barra de Progreso Estilo "Carga de Energía" */
+        .progress-container {
             width: 100%;
-            height: 20px;
-            background: #334155;
-            border-radius: 10px;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 20px;
             position: relative;
-            border: 2px solid #475569;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 0 #cbd5e1;
             overflow: hidden;
         }
 
         #bar-fill {
             width: 0%;
             height: 100%;
-            background: var(--primary);
-            transition: width 0.4s ease;
+            background: var(--accent);
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .percent-badge {
             position: absolute;
-            right: 10px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: white;
             font-weight: bold;
-            font-size: 0.7rem;
-            text-shadow: 1px 1px 2px black;
+            font-size: 0.9rem;
+            color: #92400e;
         }
 
-        /* Footer fijo o al final del flujo */
+        /* Botones Grandes para Niños */
         .footer-controls {
             padding: 20px;
-            background: var(--card-bg);
-            border-top: 2px solid #334155;
-            position: sticky;
-            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .btn-group {
-            max-width: 400px;
-            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
         }
 
         button {
             width: 100%;
-            padding: 18px;
-            border-radius: 15px;
+            padding: 20px;
+            border-radius: 25px;
             border: none;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 4px 0 #0284c7;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        #btn-start { background: var(--primary); color: #0f172a; }
-        #btn-stop { background: #ef4444; color: white; display: none; box-shadow: 0 4px 0 #b91c1c; }
-        #btn-reload { background: #64748b; color: white; display: none; box-shadow: 0 4px 0 #334155; }
-
-        button:active { transform: translateY(2px); box-shadow: none; }
-
-        #status { text-align: center; margin-top: 10px; font-size: 0.9rem; color: #bae6fd; }
-
-        /* Estilo para pantallas grandes (Escritorio) */
-        @media (min-width: 768px) {
-            .main-layout { flex-direction: row; align-items: stretch; height: 70vh; }
-            .progress-aside { width: 50px; height: auto; flex-direction: column; justify-content: flex-end; }
-            #bar-fill { width: 100%; height: 0%; transition: height 0.4s ease; }
-            .percent-badge { bottom: 10px; top: auto; left: 50%; transform: translateX(-50%); }
+        #btn-start { 
+            background: var(--success); 
+            color: white; 
+            box-shadow: 0 6px 0 #16a34a; 
         }
+        
+        #btn-stop { 
+            background: var(--fail); 
+            color: white; 
+            display: none; 
+            box-shadow: 0 6px 0 #dc2626; 
+        }
+
+        #btn-reload { 
+            background: var(--primary); 
+            color: white; 
+            display: none; 
+            box-shadow: 0 6px 0 #2563eb; 
+        }
+
+        button:active { transform: translateY(4px); box-shadow: none; }
+
+        #status { 
+            text-align: center; 
+            margin-top: 15px; 
+            font-size: 1.1rem; 
+            font-weight: bold;
+            color: #0369a1; 
+        }
+
+        .confetti { position: absolute; font-size: 30px; animation: fall 3s linear forwards; pointer-events: none; z-index: 100; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
 
 <div class="main-layout">
-    <div class="text-container">
+    <div class="text-container" id="card">
         <p id="text-to-read">Padre nuestro, que estás en el cielo,
 santificado sea tu Nombre;
 venga a nosotros tu reino;
@@ -147,19 +170,19 @@ y líbranos del mal.
 Amén.</p>
     </div>
 
-    <div class="progress-aside">
+    <div class="progress-container">
         <div id="bar-fill"></div>
         <div class="percent-badge" id="percent-label">0%</div>
     </div>
-</div>
 
-<div class="footer-controls">
-    <div class="btn-group">
-        <button id="btn-start">🙏 Empezar Oración</button>
-        <button id="btn-stop">🏁 Terminar</button>
-        <button id="btn-reload">🔄 Reintentar</button>
+    <div class="footer-controls">
+        <div class="btn-group">
+            <button id="btn-start">🚀 ¡Empezar a rezar!</button>
+            <button id="btn-stop">🌈 ¡Ya terminé!</button>
+            <button id="btn-reload">✨ Jugar de nuevo</button>
+        </div>
+        <div id="status">Haz clic en el cohete para empezar</div>
     </div>
-    <div id="status">Presiona para comenzar</div>
 </div>
 
 <script>
@@ -169,6 +192,7 @@ Amén.</p>
     const status = document.getElementById('status');
     const fill = document.getElementById('bar-fill');
     const label = document.getElementById('percent-label');
+    const card = document.getElementById('card');
     
     const targetText = document.getElementById('text-to-read').innerText
         .toLowerCase()
@@ -179,25 +203,32 @@ Amén.</p>
     let currentScore = 0;
     let audioCtx;
 
-    if (SpeechRecognition) {
+    if (!SpeechRecognition) {
+        status.innerText = "¡Ups! Tu navegador no tiene micrófono mágico.";
+    } else {
         const recognition = new SpeechRecognition();
         recognition.lang = 'es-ES';
         recognition.continuous = true;
         recognition.interimResults = true;
 
         btnStart.onclick = () => {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            recognition.start();
-            btnStart.style.display = "none";
-            btnStop.style.display = "block";
-            status.innerText = "🎤 Escuchando...";
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                recognition.start();
+                btnStart.style.display = "none";
+                btnStop.style.display = "flex";
+                status.innerText = "⭐ ¡Te estoy escuchando con atención! ⭐";
+                card.style.borderColor = "#fbbf24";
+            } catch (e) {
+                console.error(e);
+            }
         };
 
         btnStop.onclick = () => {
             recognition.stop();
             btnStop.style.display = "none";
-            btnReload.style.display = "block";
-            status.innerText = currentScore >= 90 ? "¡Amén! ✨" : "Inténtalo de nuevo.";
+            btnReload.style.display = "flex";
+            if (currentScore >= 85) celebrar(); else fracaso();
         };
 
         btnReload.onclick = () => location.reload();
@@ -221,15 +252,33 @@ Amén.</p>
     }
 
     function updateUI(score) {
-        const isMobile = window.innerWidth < 768;
-        if (isMobile) {
-            fill.style.width = score + "%";
-            fill.style.height = "100%";
-        } else {
-            fill.style.height = score + "%";
-            fill.style.width = "100%";
-        }
+        fill.style.width = score + "%";
         label.innerText = score + "%";
+        if (score > 50) fill.style.background = "#4ade80";
+    }
+
+    function celebrar() {
+        status.innerText = "¡Increíble! ¡Lo hiciste muy bien! ✨🙏";
+        card.style.borderColor = "#4ade80";
+        lanzarConfeti();
+    }
+
+    function fracaso() {
+        status.innerText = "¡Casi lo logras! ¿Quieres intentarlo otra vez? 😊";
+        card.style.borderColor = "#f87171";
+    }
+
+    function lanzarConfeti() {
+        const emojis = ['🎈', '⭐', '✨', '☁️', '🌞'];
+        for (let i = 0; i < 25; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+            confetti.style.left = Math.random() * 95 + '%';
+            confetti.style.top = '-50px';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 3000);
+        }
     }
 </script>
 </body>
