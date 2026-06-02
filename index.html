@@ -3,170 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Padre Nuestro para Niños</title>
+    <title>Padre Nuestro - Lectura</title>
     <style>
         :root {
-            --bg-color: #e0f2fe; /* Azul cielo pastel */
-            --text-color: #0369a1;
-            --primary: #38bdf8;
-            --success: #4ade80; /* Verde brillante */
-            --fail: #f87171;
-            --card-bg: #ffffff;
-            --accent: #fbcfe8; /* Rosa pastel para detalles */
-            --gold: #f59e0b;
+            --cielo: #e0f2fe;
+            --texto: #0369a1;
+            --verde: #4ade80;
+            --rojo: #f87171;
+            --amarillo: #fbbf24;
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body { 
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif; 
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; 
             margin: 0; 
-            background-color: var(--bg-color);
-            color: #1e293b;
+            background-color: var(--cielo);
+            color: var(--texto);
             display: flex;
             flex-direction: column;
-            height: 100vh; /* Altura fija de la pantalla */
+            /* Evita que la pantalla entera rebote en móviles */
+            height: 100vh;
             height: -webkit-fill-available;
-            overflow: hidden; /* Evita que la pantalla entera rebote */
+            overflow: hidden; 
         }
 
-        /* Cabecera Fija */
-        .header-title {
-            text-align: center;
-            padding: 10px 5px 0 5px;
-            margin: 0;
-            font-size: 1.3rem;
-            color: var(--text-color);
-            text-shadow: 1px 1px 0px white;
-        }
-
-        /* CONTENEDOR CENTRAL: Ocupa el espacio restante */
-        .main-layout {
-            flex: 1;
+        /* 1. ÁREA DE TEXTO (SCROLLABLE) */
+        .scroll-area {
+            flex: 1; /* Ocupa todo el espacio sobrante */
+            overflow-y: auto; /* Permite el scroll interno */
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            padding: 15px;
-            gap: 15px;
-            overflow: hidden; /* Mantiene los bordes limpios */
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
+            align-items: center;
         }
 
-        /* CAJA DE TEXTO CON SCROLL INDEPENDIENTE */
-        .text-container {
-            flex: 1;
-            background: var(--card-bg);
-            padding: 25px 20px;
-            border-radius: 30px;
-            border: 5px solid #bae6fd;
-            box-shadow: 0 8px 0 #bae6fd;
-            overflow-y: auto; /* Aquí ocurre la magia del scroll */
-            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+        .pergamino {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 40px;
+            border: 6px solid #bae6fd;
+            box-shadow: 0 10px 0 #bae6fd;
+            width: 100%;
+            max-width: 500px;
+            min-height: min-content;
         }
 
         #text-to-read {
-            font-size: clamp(1.4rem, 5.5vw, 1.8rem);
-            line-height: 1.7;
+            font-size: 1.6rem;
+            line-height: 1.8;
             margin: 0;
             white-space: pre-wrap;
             text-align: center;
-            color: #0c4a6e;
             font-weight: bold;
         }
 
-        /* CONTROLES FIJOS (BARRA Y BOTONES) */
-        .fixed-controls {
-            background: var(--card-bg);
-            border-radius: 25px;
-            padding: 15px;
-            border: 4px solid #bae6fd;
-            box-shadow: 0 6px 0 #bae6fd;
+        /* 2. CONTROLES FIJOS (ABAJO) */
+        .fixed-hud {
+            background: white;
+            padding: 20px;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
+            z-index: 10;
         }
 
-        /* Barra de Progreso Estilo "Superpoder" */
-        .progress-container {
+        .progress-bar {
             width: 100%;
-            height: 28px;
-            background: #e2e8f0;
+            height: 25px;
+            background: #f1f5f9;
             border-radius: 20px;
+            border: 3px solid #bae6fd;
             position: relative;
             overflow: hidden;
-            border: 2px solid #cbd5e1;
         }
 
         #bar-fill {
             width: 0%;
             height: 100%;
-            background: #fcd34d; /* Amarillo inicial */
-            transition: width 0.3s cubic-bezier(0.1, 0.8, 0.3, 1);
+            background: var(--amarillo);
+            transition: width 0.4s ease;
         }
 
-        .percent-badge {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            font-size: 0.9rem;
-            color: #0c4a6e;
-            text-shadow: 1px 1px 0 white;
-        }
-
-        /* Botonera */
-        .btn-group {
+        .btn-group button {
             width: 100%;
-        }
-
-        button {
-            width: 100%;
-            padding: 16px;
+            padding: 18px;
             border-radius: 20px;
             border: none;
-            font-weight: bold;
             font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-transform: uppercase;
-        }
-
-        #btn-start { background: var(--success); color: white; box-shadow: 0 5px 0 #16a34a; }
-        #btn-stop { background: var(--fail); color: white; display: none; box-shadow: 0 5px 0 #dc2626; }
-        #btn-reload { background: var(--primary); color: white; display: none; box-shadow: 0 5px 0 #2563eb; }
-
-        button:active { transform: translateY(3px); box-shadow: none; }
-
-        #status { 
-            text-align: center; 
-            font-size: 1rem; 
             font-weight: bold;
-            color: var(--text-color);
-            margin: 0;
+            cursor: pointer;
+            text-transform: uppercase;
+            color: white;
+            transition: transform 0.1s;
         }
 
-        /* Efecto Confeti */
-        .confetti { position: absolute; font-size: 30px; animation: fall 3s linear forwards; pointer-events: none; z-index: 100; }
+        #btn-start { background: var(--verde); box-shadow: 0 6px 0 #16a34a; }
+        #btn-stop { background: var(--rojo); box-shadow: 0 6px 0 #dc2626; display: none; }
+        #btn-reload { background: #60a5fa; box-shadow: 0 6px 0 #2563eb; display: none; }
+
+        button:active { transform: translateY(4px); box-shadow: none; }
+
+        #status { text-align: center; font-weight: bold; font-size: 1rem; margin: 0; }
+
+        /* Animaciones */
+        .confetti { position: absolute; font-size: 30px; animation: fall 3s linear forwards; pointer-events: none; }
         @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
 
-<h1 class="header-title">🙏 Oración del Padre Nuestro</h1>
-
-<div class="main-layout">
-    <!-- El texto puede deslizarse libremente aquí dentro -->
-    <div class="text-container" id="scroll-box">
-        <p id="text-to-read">Padre nuestro, que estás en el cielo,
+    <div class="scroll-area">
+        <div class="pergamino">
+            <p id="text-to-read">Padre nuestro, que estás en el cielo,
 santificado sea tu Nombre;
 venga a nosotros tu reino;
 hágase tu voluntad
@@ -178,116 +130,82 @@ a los que nos ofenden;
 no nos dejes caer en la tentación,
 y líbranos del mal.
 Amén.</p>
+        </div>
     </div>
 
-    <!-- Todo este bloque de abajo se queda 100% estático -->
-    <div class="fixed-controls">
-        <div class="progress-container">
+    <div class="fixed-hud">
+        <p id="status">¡Presiona el botón para empezar!</p>
+        
+        <div class="progress-bar">
             <div id="bar-fill"></div>
-            <div class="percent-badge" id="percent-label">¡Poder de lectura: 0%!</div>
         </div>
 
         <div class="btn-group">
-            <button id="btn-start">🚀 ¡Empezar a rezar!</button>
-            <button id="btn-stop">🏁 ¡Ya terminé!</button>
-            <button id="btn-reload">✨ Jugar de nuevo</button>
+            <button id="btn-start">🚀 ¡Empezar!</button>
+            <button id="btn-stop">🏁 ¡Terminé!</button>
+            <button id="btn-reload">🔄 Reintentar</button>
         </div>
-        
-        <p id="status">Presiona el botón verde para comenzar</p>
     </div>
-</div>
 
 <script>
     const btnStart = document.getElementById('btn-start');
     const btnStop = document.getElementById('btn-stop');
     const btnReload = document.getElementById('btn-reload');
-    const status = document.getElementById('status');
     const fill = document.getElementById('bar-fill');
-    const label = document.getElementById('percent-label');
-    const scrollBox = document.getElementById('scroll-box');
+    const status = document.getElementById('status');
     
     const targetText = document.getElementById('text-to-read').innerText
-        .toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/[.,;]/g, "");
+        .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,;]/g, "");
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let currentScore = 0;
     let audioCtx;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    // SISTEMA DE SONIDOS MÁGICOS
-    function playTone(freq, type, duration, vol) {
-        try {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        } catch(e) { console.log("Audio no soportado aún"); }
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 
-    function sonidoBoton() { playTone(300, 'triangle', 0.15, 0.15); }
-    function sonidoPunto() { playTone(600, 'sine', 0.08, 0.1); }
-    
-    function sonidoVictoria() {
-        const notas = [523.25, 659.25, 783.99, 1046.50]; // Acorde mayor alegre
-        notas.forEach((nota, i) => {
-            setTimeout(() => playTone(nota, 'sine', 0.4, 0.15), i * 120);
-        });
+    function playSound(freq, duration, type = 'sine') {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + duration);
     }
 
-    function sonidoError() {
-        playTone(180, 'sawtooth', 0.3, 0.15);
-        setTimeout(() => playTone(140, 'sawtooth', 0.4, 0.15), 150);
-    }
-
-    if (!SpeechRecognition) {
-        status.innerText = "¡Ups! El micrófono mágico no funciona aquí.";
-    } else {
+    if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.lang = 'es-ES';
         recognition.continuous = true;
         recognition.interimResults = true;
 
         btnStart.onclick = () => {
-            sonidoBoton();
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            playSound(500, 0.2);
             recognition.start();
             btnStart.style.display = "none";
-            btnStop.style.display = "flex";
-            status.innerText = "⭐ ¡Te escucho! Di la oración... ⭐";
+            btnStop.style.display = "block";
+            status.innerText = "🎤 ¡Te escucho!";
         };
 
         btnStop.onclick = () => {
             recognition.stop();
             btnStop.style.display = "none";
-            btnReload.style.display = "flex";
-            
-            if (currentScore >= 80) {
-                status.innerText = "¡Excelente! ¡Qué linda oración! ✨🙏";
-                sonidoVictoria();
+            btnReload.style.display = "block";
+            const score = parseInt(fill.style.width);
+            if (score >= 85) {
+                status.innerText = "¡Excelente! ✨🙏";
+                playSound(600, 0.1); playSound(800, 0.3);
                 lanzarConfeti();
             } else {
-                status.innerText = "¡Casi lo logras! ¿Lo hacemos otra vez? 😊";
-                sonidoError();
+                status.innerText = "¡Casi! Intenta de nuevo 😊";
+                playSound(200, 0.5, 'sawtooth');
             }
         };
 
-        btnReload.onclick = () => {
-            sonidoBoton();
-            setTimeout(() => location.reload(), 150);
-        };
+        btnReload.onclick = () => location.reload();
 
         let lastScore = 0;
         recognition.onresult = (event) => {
@@ -295,45 +213,31 @@ Amén.</p>
             for (let i = 0; i < event.results.length; i++) {
                 transcript += event.results[i][0].transcript + " ";
             }
-            currentScore = calculateScore(transcript);
+            let matches = 0;
+            const words = targetText.split(/\s+/).filter(w => w.length > 1);
+            const cleanSpoken = transcript.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,;]/g, "");
             
-            // Si el puntaje sube, hace un sonido de recompensa corto
-            if(currentScore > lastScore) {
-                sonidoPunto();
-                lastScore = currentScore;
+            words.forEach(word => { if (cleanSpoken.includes(word)) matches++; });
+            let score = Math.min(100, Math.round((matches / words.length) * 100));
+            
+            if (score > lastScore) {
+                playSound(1000, 0.05); // Sonido de "punto"
+                lastScore = score;
             }
             
-            updateUI(currentScore);
+            fill.style.width = score + "%";
+            if(score > 80) fill.style.background = "#4ade80";
         };
     }
 
-    function calculateScore(spoken) {
-        const cleanSpoken = spoken.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,;]/g, "");
-        const words = targetText.split(/\s+/).filter(w => w.length > 1);
-        let matches = 0;
-        words.forEach(word => { if (cleanSpoken.includes(word)) matches++; });
-        return Math.min(100, Math.round((matches / words.length) * 100));
-    }
-
-    function updateUI(score) {
-        fill.style.width = score + "%";
-        label.innerText = "¡Poder de lectura: " + score + "%!";
-        
-        if (score >= 80) fill.style.background = "#4ade80"; // Cambia a verde al ganar
-        else if (score >= 40) fill.style.background = "#60a5fa"; // Azul a mitad de camino
-        else fill.style.background = "#fcd34d"; // Amarillo al inicio
-    }
-
     function lanzarConfeti() {
-        const emojis = ['🎈', '⭐', '✨', '🕊️', '🌞'];
-        for (let i = 0; i < 25; i++) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-            confetti.style.left = Math.random() * 95 + '%';
-            confetti.style.top = '-50px';
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 3000);
+        for (let i = 0; i < 20; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.innerText = ['⭐', '✨', '🎈'][Math.floor(Math.random()*3)];
+            c.style.left = Math.random() * 95 + '%';
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 3000);
         }
     }
 </script>
