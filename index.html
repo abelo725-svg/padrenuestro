@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lectura: Padre Nuestro</title>
+    <title>Padre Nuestro - Lectura</title>
     <style>
         :root {
             --bg-color: #0f172a;
             --text-color: #f1f5f9;
             --primary: #38bdf8;
-            --success: #10b981;
-            --fail: #ef4444;
             --card-bg: #1e293b;
         }
 
@@ -23,78 +21,75 @@
             color: var(--text-color);
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            height: -webkit-fill-available;
-            overflow: hidden;
+            /* Cambiado para permitir scroll si el contenido crece */
+            min-height: 100vh;
+            overflow-y: auto; 
         }
 
         .main-layout {
             display: flex;
+            flex-direction: column;
             flex: 1;
             padding: 15px;
             gap: 15px;
-            overflow: hidden;
-            flex-direction: row;
         }
 
+        /* Contenedor de texto con altura flexible */
         .text-container {
-            flex: 1;
             background: var(--card-bg);
-            padding: 20px;
+            padding: 25px;
             border-radius: 20px;
             border: 2px solid #334155;
-            overflow-y: auto;
+            min-height: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         #text-to-read {
-            font-size: clamp(1.1rem, 4.5vw, 1.6rem);
-            line-height: 1.5;
+            font-size: clamp(1.2rem, 5vw, 1.6rem);
+            line-height: 1.6;
             margin: 0;
             white-space: pre-wrap;
             text-align: center;
-            font-weight: 500;
         }
 
+        /* Barra de progreso horizontal para móvil por defecto */
         .progress-aside {
-            width: 40px;
+            width: 100%;
+            height: 20px;
             background: #334155;
-            border-radius: 20px;
+            border-radius: 10px;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
             border: 2px solid #475569;
+            overflow: hidden;
         }
 
         #bar-fill {
-            width: 100%;
-            height: 0%;
+            width: 0%;
+            height: 100%;
             background: var(--primary);
-            border-radius: 20px;
-            transition: height 0.4s ease, background-color 0.3s;
+            transition: width 0.4s ease;
         }
 
         .percent-badge {
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: #0f172a;
-            padding: 2px 6px;
-            border-radius: 5px;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
             font-weight: bold;
             font-size: 0.7rem;
-            white-space: nowrap;
+            text-shadow: 1px 1px 2px black;
         }
 
+        /* Footer fijo o al final del flujo */
         .footer-controls {
             padding: 20px;
             background: var(--card-bg);
             border-top: 2px solid #334155;
+            position: sticky;
+            bottom: 0;
         }
 
         .btn-group {
@@ -107,51 +102,31 @@
 
         button {
             width: 100%;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 15px;
             border: none;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
             text-transform: uppercase;
-            transition: transform 0.1s;
+            box-shadow: 0 4px 0 #0284c7;
         }
 
         #btn-start { background: var(--primary); color: #0f172a; }
-        #btn-stop { background: var(--fail); color: white; display: none; }
-        #btn-reload { background: #64748b; color: white; display: none; }
+        #btn-stop { background: #ef4444; color: white; display: none; box-shadow: 0 4px 0 #b91c1c; }
+        #btn-reload { background: #64748b; color: white; display: none; box-shadow: 0 4px 0 #334155; }
 
-        button:active { transform: scale(0.98); }
+        button:active { transform: translateY(2px); box-shadow: none; }
 
-        #status { 
-            margin-top: 10px; 
-            text-align: center; 
-            font-size: 0.9rem; 
-            color: #bae6fd; 
+        #status { text-align: center; margin-top: 10px; font-size: 0.9rem; color: #bae6fd; }
+
+        /* Estilo para pantallas grandes (Escritorio) */
+        @media (min-width: 768px) {
+            .main-layout { flex-direction: row; align-items: stretch; height: 70vh; }
+            .progress-aside { width: 50px; height: auto; flex-direction: column; justify-content: flex-end; }
+            #bar-fill { width: 100%; height: 0%; transition: height 0.4s ease; }
+            .percent-badge { bottom: 10px; top: auto; left: 50%; transform: translateX(-50%); }
         }
-
-        @media (max-width: 600px) {
-            .main-layout {
-                flex-direction: column;
-            }
-            .progress-aside {
-                width: 100%;
-                height: 15px;
-                flex-direction: row;
-                justify-content: flex-start;
-            }
-            #bar-fill {
-                width: 0%;
-                height: 100%;
-            }
-            .percent-badge {
-                top: -25px;
-                bottom: auto;
-            }
-        }
-
-        .confetti { position: absolute; font-size: 25px; animation: fall 3s linear forwards; pointer-events: none; }
-        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -180,11 +155,11 @@ Amén.</p>
 
 <div class="footer-controls">
     <div class="btn-group">
-        <button id="btn-start">🙏 Rezar Padre Nuestro</button>
+        <button id="btn-start">🙏 Empezar Oración</button>
         <button id="btn-stop">🏁 Terminar</button>
         <button id="btn-reload">🔄 Reintentar</button>
     </div>
-    <div id="status">Presiona el botón para comenzar</div>
+    <div id="status">Presiona para comenzar</div>
 </div>
 
 <script>
@@ -204,9 +179,7 @@ Amén.</p>
     let currentScore = 0;
     let audioCtx;
 
-    if (!SpeechRecognition) {
-        status.innerText = "Tu navegador no soporta reconocimiento de voz. Prueba en Chrome.";
-    } else {
+    if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.lang = 'es-ES';
         recognition.continuous = true;
@@ -214,18 +187,17 @@ Amén.</p>
 
         btnStart.onclick = () => {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
             recognition.start();
             btnStart.style.display = "none";
             btnStop.style.display = "block";
-            status.innerText = "🎤 Te escucho...";
+            status.innerText = "🎤 Escuchando...";
         };
 
         btnStop.onclick = () => {
             recognition.stop();
             btnStop.style.display = "none";
             btnReload.style.display = "block";
-            if (currentScore >= 90) celebrar(); else fracaso();
+            status.innerText = currentScore >= 90 ? "¡Amén! ✨" : "Inténtalo de nuevo.";
         };
 
         btnReload.onclick = () => location.reload();
@@ -245,57 +217,19 @@ Amén.</p>
         const words = targetText.split(/\s+/).filter(w => w.length > 1);
         let matches = 0;
         words.forEach(word => { if (cleanSpoken.includes(word)) matches++; });
-        return Math.round((matches / words.length) * 100);
+        return Math.min(100, Math.round((matches / words.length) * 100));
     }
 
     function updateUI(score) {
-        const safeScore = score > 100 ? 100 : score;
-        const isMobile = window.innerWidth <= 600;
-        
-        if(isMobile) {
-            fill.style.width = safeScore + "%";
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+            fill.style.width = score + "%";
             fill.style.height = "100%";
         } else {
-            fill.style.height = safeScore + "%";
+            fill.style.height = score + "%";
             fill.style.width = "100%";
         }
-        
-        label.innerText = safeScore + "%";
-        if (safeScore < 50) fill.style.backgroundColor = "#ef4444";
-        else if (safeScore < 90) fill.style.backgroundColor = "#f59e0b";
-        else fill.style.backgroundColor = "#10b981";
-    }
-
-    function celebrar() {
-        status.innerText = "¡Amén! Escuchado correctamente. ✨";
-        for(let i=0; i<10; i++) setTimeout(() => playTone(440, 0.2, 0.1), i * 150);
-        lanzarConfeti();
-    }
-
-    function fracaso() {
-        status.innerText = "Inténtalo de nuevo.";
-        playTone(100, 0.5, 0.2);
-    }
-
-    function playTone(freq, duration, vol) {
-        if(!audioCtx) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + duration);
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + duration);
-    }
-
-    function lanzarConfeti() {
-        for (let i = 0; i < 20; i++) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.innerText = ['⭐', '✨', '🙏'][Math.floor(Math.random()*3)];
-            confetti.style.left = Math.random() * 95 + '%';
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 3000);
-        }
+        label.innerText = score + "%";
     }
 </script>
 </body>
